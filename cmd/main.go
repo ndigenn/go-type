@@ -107,12 +107,17 @@ func (m model) View() string {
 			case i < len(typed) && typed[i] == m.target[i]:
 				styled += styles.CorrectStyle.Render(string(m.target[i]))
 			case i < len(typed) && typed[i] != m.target[i]:
-				styled += styles.IncorrectStyle.Render(string(m.target[i]))
+				// if incorrect space typed, put diff character
+				char := string(m.target[i])
+				if char == " " {
+					char = "·"
+				}
+				styled += styles.IncorrectStyle.Render(char)
 			default:
 				styled += styles.PendingStyle.Render(string(m.target[i]))
 			}
 		}
-		content = fmt.Sprintf("%s\n\n\t %s", styled, m.textInput.View())
+		content = fmt.Sprintf("%s\n\n%s", styled, m.textInput.View())
 	case 1: // Stats
 		typed := m.textInput.Value()
 		correct := 0
@@ -138,10 +143,18 @@ func (m model) View() string {
 	// Wrap content in your purple box style
 	box := styles.Style.Width(m.width - 4).Render(content)
 
-	// Combine tabs and box
-	return lipgloss.NewStyle().
-		Padding(1, 2).
-		Render(tabRow + "\n" + box)
+	paddedTabRow := lipgloss.NewStyle().
+	Width(m.width - 4).
+	Align(lipgloss.Center).
+	Render(tabRow)
+
+	combined := lipgloss.JoinVertical(lipgloss.Left, paddedTabRow, box)
+
+	return lipgloss.Place(
+		m.width, m.height,
+		lipgloss.Center, lipgloss.Center,
+		combined,
+	)
 }
 
 func main() {

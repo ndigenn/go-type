@@ -10,13 +10,13 @@ var (
 	IncorrectStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("1"))  // Red
 	PendingStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("8"))    // Gray
 
-	InactiveTabBorder = TabBorderWithBottom("┴", "─", "┴")
-	ActiveTabBorder   = TabBorderWithBottom("┘", " ", "└")
+	InactiveTabBorder = TabBorderWithBottom(" ", " ", " ")
+	ActiveTabBorder   = TabBorderWithBottom(" ", "-", " ")
 	HighlightColor    = lipgloss.AdaptiveColor{Light: "#874BFD", Dark: "#7D56F4"}
 	InactiveTabStyle  = lipgloss.NewStyle().
 		Border(InactiveTabBorder, true).
 		BorderForeground(HighlightColor).
-		Padding(0, 1)
+		Padding(0, 1).Align(lipgloss.Center)
 	ActiveTabStyle = InactiveTabStyle.Border(ActiveTabBorder, true)
 )
 
@@ -30,16 +30,16 @@ var Style = lipgloss.NewStyle().
 	Align(lipgloss.Center).
 	Width(50)
 
-// border decor
+// border for box decor
 var Border = lipgloss.Border{
-	Top: "-",
-	Bottom: "-",
-	Left: "|",
-	Right: "|",
-	TopLeft: "*",
-	TopRight: "*",
-	BottomLeft: "*",
-	BottomRight: "*",
+	// Top: "-",
+	// Bottom: "-",
+	// Left: "|",
+	// Right: "|",
+	// TopLeft: "*",
+	// TopRight: "*",
+	// BottomLeft: "*",
+	// BottomRight: "*",
 }
 
 func TabBorderWithBottom(left, middle, right string) lipgloss.Border {

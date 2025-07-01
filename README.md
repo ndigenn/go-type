@@ -11,6 +11,8 @@ A TUI typing test built with Bubbletea & Lipgloss in golang
 	- add tabs for stats - after finishing sentence, give complete message and move to stats page
 	- maybe a table of your own ranking and stats from the last several attempts that are stored locally
 	- different types of quotes chosen by the user
+	- make tabs center of page and a different color
+	- make instructions on how to use program
 
 ## COMPLETED:
 	- if character matches, change color of quote chracter to green, otherwise red
