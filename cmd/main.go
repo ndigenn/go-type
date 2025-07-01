@@ -65,6 +65,7 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, nil
 		case "ctrl+r":
 			m.Init()
+			m.activeTab = 0
 			return m, nil
 		}
 
@@ -75,6 +76,10 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	}
 
 	m.textInput, cmd = m.textInput.Update(msg)
+
+	if len(m.textInput.Value()) == len(m.target) {
+		m.activeTab = 1
+	}
 
 	return m, cmd
 }
@@ -130,13 +135,14 @@ func (m model) View() string {
 		if len(typed) > 0 {
 			accuracy = float64(correct) / float64(len(typed)) * 100
 		}
-		content = fmt.Sprintf("Typed: %d\nCorrect: %d\nAccuracy: %.2f%%", len(typed), correct, accuracy)
+		content = fmt.Sprintf("Typed: %d\nCorrect: %d\nAccuracy: %.2f%%\n---\nCtrl+r to restart\nCtrl+c or esc to quit", len(typed), correct, accuracy)
 	case 2: // About
 		content = `
 		A TUI typing app built with Bubble Tea and Lip Gloss.
 		Author - ndigenn
 		Website - ndigenn.com
 		github - https://github.com/ndigenn
+
 		`
 	}
 
@@ -158,7 +164,7 @@ func (m model) View() string {
 }
 
 func main() {
-	tabs := []string{"typing test", "statistics", "info"}
+	tabs := []string{"type", "statistics", "info"}
 	p := tea.NewProgram(&model{tabs: tabs}, tea.WithAltScreen())
 	if _, err := p.Run(); err != nil {
 		fmt.Println("Error running program:", err)

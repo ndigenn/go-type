@@ -10,14 +10,8 @@ var (
 	IncorrectStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("1"))  // Red
 	PendingStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("8"))    // Gray
 
-	InactiveTabBorder = TabBorderWithBottom(" ", " ", " ")
-	ActiveTabBorder   = TabBorderWithBottom(" ", "-", " ")
-	HighlightColor    = lipgloss.AdaptiveColor{Light: "#874BFD", Dark: "#7D56F4"}
-	InactiveTabStyle  = lipgloss.NewStyle().
-		Border(InactiveTabBorder, true).
-		BorderForeground(HighlightColor).
-		Padding(0, 1).Align(lipgloss.Center)
-	ActiveTabStyle = InactiveTabStyle.Border(ActiveTabBorder, true)
+	InactiveTabStyle  = lipgloss.NewStyle().Padding(0, 1).Align(lipgloss.Center)
+	ActiveTabStyle = InactiveTabStyle.Foreground(lipgloss.Color("#D70040")).Bold(true)
 )
 
 // styles for box
@@ -34,8 +28,8 @@ var Style = lipgloss.NewStyle().
 var Border = lipgloss.Border{
 	// Top: "-",
 	// Bottom: "-",
-	// Left: "|",
-	// Right: "|",
+	 // Left: "|",
+	 // Right: "|",
 	// TopLeft: "*",
 	// TopRight: "*",
 	// BottomLeft: "*",
