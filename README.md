@@ -10,13 +10,14 @@ A TUI typing test built with Bubbletea & Lipgloss in golang
 	- Once all characters are typed, go to stats screen
 	- add tabs for stats - after finishing sentence, give complete message and move to stats page
 	- maybe a table of your own ranking and stats from the last several attempts that are stored locally
-	- should be able to change prompts (how long, types of characters)
-	- button to reset the quote and do it again
+	- different types of quotes chosen by the user
 
 ## COMPLETED:
 	- if character matches, change color of quote chracter to green, otherwise red
 	- check all characters entered against the chosen quote
 	- random quotes
+	- tabs for diff pages
+	- button to reset the quote and do it again
 
 ## Progression:
 1. Initialized a bubble tea program
