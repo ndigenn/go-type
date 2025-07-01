@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"go-type/cmd/parse"
 	"go-type/cmd/styles"
-	 "math/rand"
+	"math/rand"
 	"os"
 
 	"github.com/charmbracelet/bubbles/textinput"
@@ -12,24 +12,27 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-
 // passed as context to almost all functions
-type model struct{
+type model struct {
 	width, height int
-	textInput textinput.Model
-	target string
-	tabs []string
-	activeTab int
+	textInput     textinput.Model
+	target        string
+	tabs          []string
+	activeTab     int
 }
 
 // goofy ah functions cause go can't do ternary
 func max(a, b int) int {
-	if a > b { return a }
+	if a > b {
+		return a
+	}
 	return b
 }
 
 func min(a, b int) int {
-	if a < b { return a }
+	if a < b {
+		return a
+	}
 	return b
 }
 
@@ -58,10 +61,10 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "ctrl+c", "esc":
 			return m, tea.Quit
 		case "right":
-			m.activeTab = min(m.activeTab + 1, len(m.tabs) - 1)
+			m.activeTab = min(m.activeTab+1, len(m.tabs)-1)
 			return m, nil
 		case "left":
-			m.activeTab = max(m.activeTab - 1, 0)
+			m.activeTab = max(m.activeTab-1, 0)
 			return m, nil
 		case "ctrl+r":
 			m.Init()
@@ -84,7 +87,6 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, cmd
 }
 
-
 // changes the view of tui, changes colors of the target string based on
 // what the user typed
 func (m model) View() string {
@@ -104,7 +106,7 @@ func (m model) View() string {
 	// Content based on active tab
 	var content string
 	switch m.activeTab {
-	case 0: // Typing
+	case 0: // typing test
 		typed := m.textInput.Value()
 		var styled string
 		for i := 0; i < len(m.target); i++ {
@@ -123,7 +125,12 @@ func (m model) View() string {
 			}
 		}
 		content = fmt.Sprintf("%s\n\n%s", styled, m.textInput.View())
-	case 1: // Stats
+	case 1: // stats page
+	// need to set a timer when user starts typing
+	// ends when character length is hit for target string
+	// take total time/total characters in string as wpm.
+	// Divide time into quartiles and test what the wpm was for each quartiles
+	// find out how to graph it
 		typed := m.textInput.Value()
 		correct := 0
 		for i := 0; i < len(typed) && i < len(m.target); i++ {
@@ -136,7 +143,7 @@ func (m model) View() string {
 			accuracy = float64(correct) / float64(len(typed)) * 100
 		}
 		content = fmt.Sprintf("Typed: %d\nCorrect: %d\nAccuracy: %.2f%%\n---\nCtrl+r to restart\nCtrl+c or esc to quit", len(typed), correct, accuracy)
-	case 2: // About
+	case 2: // info page
 		content = `
 		A TUI typing app built with Bubble Tea and Lip Gloss.
 		Author - ndigenn
@@ -146,16 +153,18 @@ func (m model) View() string {
 		`
 	}
 
-	// Wrap content in your purple box style
+	// place content variable
 	box := styles.Style.Width(m.width - 4).Render(content)
 
+	// fix the tabs spacing
 	paddedTabRow := lipgloss.NewStyle().
-	Width(m.width - 4).
-	Align(lipgloss.Center).
-	Render(tabRow)
+		Width(m.width - 4).
+		Align(lipgloss.Center).
+		Render(tabRow)
 
 	combined := lipgloss.JoinVertical(lipgloss.Left, paddedTabRow, box)
 
+	// place everything in the middle
 	return lipgloss.Place(
 		m.width, m.height,
 		lipgloss.Center, lipgloss.Center,

@@ -7,11 +7,8 @@ A TUI typing test built with Bubbletea & Lipgloss in golang
 		- wpm
 		- accuracy
 		- ntcharts: graphs based on speed throughout? total_time / 4 for quartiles of the graph
-	- Once all characters are typed, go to stats screen
-	- add tabs for stats - after finishing sentence, give complete message and move to stats page
 	- maybe a table of your own ranking and stats from the last several attempts that are stored locally
 	- different types of quotes chosen by the user
-	- make tabs center of page and a different color
 	- make instructions on how to use program
 
 ## COMPLETED:
@@ -20,6 +17,9 @@ A TUI typing test built with Bubbletea & Lipgloss in golang
 	- random quotes
 	- tabs for diff pages
 	- button to reset the quote and do it again
+	- Once all characters are typed, go to stats screen
+	- make tabs center of page and a different color
+	- add tabs for stats - after finishing sentence
 
 ## Progression:
 1. Initialized a bubble tea program
@@ -34,6 +34,14 @@ A TUI typing test built with Bubbletea & Lipgloss in golang
 	- calculate stats, wpm, accuracy, etc.
 	- show charts with ntcharts
 	- clean up some of the styles
+
+
+Day 1:
+	- init project, get core functionality down
+Day 2:
+	- finally nail styles, get loop of gameplay done
+	- set up github and fixed project structure
+
 
 ## Resources:
 https://github.com/NimbleMarkets/ntcharts?tab=readme-ov-file
