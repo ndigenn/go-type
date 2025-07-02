@@ -1,0 +1,25 @@
+# Binaries
+*.exe
+*.dll
+*.so
+*.dylib
+*.out
+
+# Build output
+bin/
+build/
+dist/
+
+# OS-generated
+.DS_Store
+
+# IDE files
+.vscode/
+.idea/
+
+# Dependency directories (if vendored)
+vendor/
+
+# Go workspace files
+go.sum
+progress.md
