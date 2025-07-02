@@ -6,6 +6,8 @@ import (
 	"go-type/cmd/styles"
 	"math/rand"
 	"os"
+	"strings"
+	"time"
 
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
@@ -43,9 +45,17 @@ func (m *model) Init() tea.Cmd {
 	ti.CharLimit = 200
 	ti.Width = 50
 
-	q := parse.ParseJSON()
-	r := rand.Intn(172)
-	m.target = q[r].Quote
+	// q := parse.ParseJSON()
+	// r := rand.Intn(172)
+	// m.target = q[r].Quote
+
+	parse.ParseWords()
+	w := parse.FilteredWords["small-10"]
+	if len(w) >= 10 {
+		start := rand.Intn(len(w) - 10 + 1)
+		w = w[start : start+10]
+	}
+	m.target = strings.Join(w, " ")
 
 	m.textInput = ti
 	return textinput.Blink
@@ -69,6 +79,36 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "ctrl+r":
 			m.Init()
 			m.activeTab = 0
+			return m, nil
+		case "1":
+			w := parse.FilteredWords["small-10"]
+			if len(w) >= 10 {
+				start := rand.Intn(len(w) - 10 + 1)
+				w = w[start : start+10]
+			}
+			m.target = strings.Join(w, " ")
+			m.textInput.SetValue("")
+			m.textInput.CharLimit = len(m.target)
+			return m, nil
+		case "2":
+			w := parse.FilteredWords["medium-25"]
+			if len(w) >= 25 {
+				start := rand.Intn(len(w) - 25 + 1)
+				w = w[start : start+25]
+			}
+			m.target = strings.Join(w, " ")
+			m.textInput.SetValue("")
+			m.textInput.CharLimit = len(m.target)
+			return m, nil
+		case "3":
+			w := parse.FilteredWords["large-50"]
+			if len(w) >= 50 {
+				start := rand.Intn(len(w) - 50 + 1)
+				w = w[start : start+50]
+			}
+			m.target = strings.Join(w, " ")
+			m.textInput.SetValue("")
+			m.textInput.CharLimit = len(m.target)
 			return m, nil
 		}
 
@@ -124,13 +164,15 @@ func (m model) View() string {
 				styled += styles.PendingStyle.Render(string(m.target[i]))
 			}
 		}
-		content = fmt.Sprintf("%s\n\n%s", styled, m.textInput.View())
+		word_size := "(1) small (2) medium (3) large"
+		instructions := "<- -> to navigate between tabs"
+		content = fmt.Sprintf("%s\n\n%s\n\n\n\n%s\n\n%s", styled, m.textInput.View(), word_size, instructions)
 	case 1: // stats page
-	// need to set a timer when user starts typing
-	// ends when character length is hit for target string
-	// take total time/total characters in string as wpm.
-	// Divide time into quartiles and test what the wpm was for each quartiles
-	// find out how to graph it
+		// need to set a timer when user starts typing
+		// ends when character length is hit for target string
+		// take total time/total characters in string as wpm.
+		// Divide time into quartiles and test what the wpm was for each quartiles
+		// find out how to graph it
 		typed := m.textInput.Value()
 		correct := 0
 		for i := 0; i < len(typed) && i < len(m.target); i++ {
@@ -144,13 +186,7 @@ func (m model) View() string {
 		}
 		content = fmt.Sprintf("Typed: %d\nCorrect: %d\nAccuracy: %.2f%%\n---\nCtrl+r to restart\nCtrl+c or esc to quit", len(typed), correct, accuracy)
 	case 2: // info page
-		content = `
-		A TUI typing app built with Bubble Tea and Lip Gloss.
-		Author - ndigenn
-		Website - ndigenn.com
-		github - https://github.com/ndigenn
-
-		`
+		content = "A TUI typing app built with Bubble Tea and Lip Gloss | Author - ndigenn "
 	}
 
 	// place content variable
@@ -173,6 +209,7 @@ func (m model) View() string {
 }
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
 	tabs := []string{"type", "statistics", "info"}
 	p := tea.NewProgram(&model{tabs: tabs}, tea.WithAltScreen())
 	if _, err := p.Run(); err != nil {

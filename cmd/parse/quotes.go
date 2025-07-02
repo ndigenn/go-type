@@ -36,3 +36,4 @@ func ParseJSON() []Quote {
 
 	return q
 }
+

@@ -4,14 +4,13 @@ A TUI typing test built with Bubbletea & Lipgloss in golang
 
 ## TODO:
 	- Begin stats:
-		- wpm
-		- accuracy
 		- ntcharts: graphs based on speed throughout? total_time / 4 for quartiles of the graph
 	- maybe a table of your own ranking and stats from the last several attempts that are stored locally
-	- different types of quotes chosen by the user
-	- make instructions on how to use program
+	- add author for credit
 
 ## COMPLETED:
+	- different sizes of strings
+	- make instructions on how to use program
 	- if character matches, change color of quote chracter to green, otherwise red
 	- check all characters entered against the chosen quote
 	- random quotes
