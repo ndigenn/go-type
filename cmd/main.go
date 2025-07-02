@@ -21,6 +21,8 @@ type model struct {
 	target        string
 	tabs          []string
 	activeTab     int
+	startTime	  time.Time
+	endTime		  time.Time
 }
 
 func max(a, b int) int {
@@ -43,7 +45,8 @@ func (m *model) Init() tea.Cmd {
 	ti.Focus()
 	ti.CharLimit = 200
 	ti.Width = 50
-
+	m.startTime = time.Time{}
+	m.endTime = time.Time{}
 
 	parse.ParseWords()
 	w := parse.FilteredWords["small-10"]
@@ -121,10 +124,18 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m, nil
 	}
 
-	m.textInput, cmd = m.textInput.Update(msg)
+	if m.activeTab == 0 {
+		m.textInput, cmd = m.textInput.Update(msg)
+	}
+
+	if m.startTime.IsZero() && len(m.textInput.Value()) == 1 {
+		m.startTime = time.Now()
+	}
 
 	if len(m.textInput.Value()) == len(m.target) {
+		m.endTime = time.Now()
 		m.activeTab = 1
+		m.textInput.Blur()
 	}
 
 	return m, cmd
@@ -170,11 +181,15 @@ func (m model) View() string {
 		instructions := "<- -> to navigate between tabs"
 		content = fmt.Sprintf("%s\n\n%s\n\n\n\n%s\n\n%s", styled, m.textInput.View(), word_size, instructions)
 	case 1: // stats page
-		// need to set a timer when user starts typing
-		// ends when character length is hit for target string
-		// take total time/total characters in string as wpm.
-		// Divide time into quartiles and test what the wpm was for each quartiles
-		// find out how to graph it
+		// calc wpm
+		duration := m.endTime.Sub(m.startTime).Minutes()
+		wordCount := float64(len(strings.Fields(m.target)))
+		wpm := 0.0
+		if duration > 0 {
+			wpm = wordCount / duration
+		}
+
+		// calc accuracy
 		typed := m.textInput.Value()
 		correct := 0
 		for i := 0; i < len(typed) && i < len(m.target); i++ {
@@ -186,7 +201,7 @@ func (m model) View() string {
 		if len(typed) > 0 {
 			accuracy = float64(correct) / float64(len(typed)) * 100
 		}
-		content = fmt.Sprintf("Typed: %d\nCorrect: %d\nAccuracy: %.2f%%\n---\nCtrl+r to restart\nCtrl+c or esc to quit", len(typed), correct, accuracy)
+		content = fmt.Sprintf("WPM: %f\nTyped: %d\nCorrect: %d\nAccuracy: %.2f%%\n---\nCtrl+r to restart\nCtrl+c or esc to quit", wpm, len(typed), correct, accuracy)
 	case 2: // info page
 		content = "A TUI typing app built in Golang with BubbleTea and LipGloss | Author - ndigenn"
 	}
@@ -212,7 +227,7 @@ func (m model) View() string {
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
-	tabs := []string{"type", "statistics", "info"}
+	tabs := []string{"type", "stats", "info"}
 	p := tea.NewProgram(&model{tabs: tabs}, tea.WithAltScreen())
 	if _, err := p.Run(); err != nil {
 		fmt.Println("Error running program:", err)
