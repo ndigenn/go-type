@@ -1,14 +1,15 @@
 # go-type more!
 
-A TUI typing test built with Bubbletea & Lipgloss in golang
+A blazingly fast TUI typing test built with Bubbletea & Lipgloss in golang to encourage you to type more!
 
 ## TODO:
 	- Begin stats:
 		- ntcharts: graphs based on speed throughout? total_time / 4 for quartiles of the graph
-	- maybe a table of your own ranking and stats from the last several attempts that are stored locally
-	- add author for credit
+		- wpm
+	- table of ranking and stats
 
 ## COMPLETED:
+	- add author for credit
 	- different sizes of strings
 	- make instructions on how to use program
 	- if character matches, change color of quote chracter to green, otherwise red
@@ -36,11 +37,13 @@ A TUI typing test built with Bubbletea & Lipgloss in golang
 
 
 Day 1:
-	- init project, get core functionality down
+	- init project, got core functionality down
 Day 2:
-	- finally nail styles, get loop of gameplay done
+	- styles, got loop of gameplay done
 	- set up github and fixed project structure
-
+Day 3:
+	- random quotes
+	- random words
 
 ## Resources:
 https://github.com/NimbleMarkets/ntcharts?tab=readme-ov-file

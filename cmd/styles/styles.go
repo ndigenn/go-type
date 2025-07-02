@@ -20,6 +20,8 @@ var Style = lipgloss.NewStyle().
 	// Foreground(lipgloss.Color("#FAFAFA")).
 	// Background(lipgloss.Color("#7D56F4")).
 	Padding(2).
+	PaddingLeft(20).
+	PaddingRight(20).
 	Border(Border).
 	Align(lipgloss.Center).
 	Width(50)

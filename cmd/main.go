@@ -45,9 +45,6 @@ func (m *model) Init() tea.Cmd {
 	ti.CharLimit = 200
 	ti.Width = 50
 
-	// q := parse.ParseJSON()
-	// r := rand.Intn(172)
-	// m.target = q[r].Quote
 
 	parse.ParseWords()
 	w := parse.FilteredWords["small-10"]
@@ -110,6 +107,13 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.textInput.SetValue("")
 			m.textInput.CharLimit = len(m.target)
 			return m, nil
+		case "4":
+			q := parse.ParseJSON()
+			r := rand.Intn(172)
+			m.target = q[r].Quote + " - " + q[r].Author
+			m.textInput.SetValue("")
+			m.textInput.CharLimit = len(m.target)
+			return m, nil
 		}
 
 	case tea.WindowSizeMsg:
@@ -164,7 +168,7 @@ func (m model) View() string {
 				styled += styles.PendingStyle.Render(string(m.target[i]))
 			}
 		}
-		word_size := "(1) small (2) medium (3) large"
+		word_size := "(1) small (2) medium (3) large (4) quotes"
 		instructions := "<- -> to navigate between tabs"
 		content = fmt.Sprintf("%s\n\n%s\n\n\n\n%s\n\n%s", styled, m.textInput.View(), word_size, instructions)
 	case 1: // stats page
@@ -186,7 +190,7 @@ func (m model) View() string {
 		}
 		content = fmt.Sprintf("Typed: %d\nCorrect: %d\nAccuracy: %.2f%%\n---\nCtrl+r to restart\nCtrl+c or esc to quit", len(typed), correct, accuracy)
 	case 2: // info page
-		content = "A TUI typing app built with Bubble Tea and Lip Gloss | Author - ndigenn "
+		content = "A TUI typing app built in Golang with BubbleTea and LipGloss | Author - ndigenn"
 	}
 
 	// place content variable
