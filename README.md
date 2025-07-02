@@ -2,6 +2,8 @@
 
 A blazingly fast TUI typing test built with Bubbletea & Lipgloss in golang to encourage you to type more!
 
+![](go-type.gif)
+
 ## Installation
 ```sh
 git clone https://github.com/ndigenn/go-type.git
