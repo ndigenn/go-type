@@ -1,6 +1,6 @@
 # go-type more!
 
-A blazingly fast TUI typing test built with Bubbletea & Lipgloss in golang to encourage you to type more!
+A TUI typing test built with Bubbletea & Lipgloss in golang to encourage you to type more!
 
 ![](go-type.gif)
 
@@ -10,6 +10,8 @@ git clone https://github.com/ndigenn/go-type.git
 cd go-type
 go run cmd/main.go
 ```
+golang must be installed for the program to work
+
 ## Usage
 1. Select 1,2, or 3 for randomly generated words
 2. Select 4 for quotes
