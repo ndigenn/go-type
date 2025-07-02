@@ -23,7 +23,6 @@ type model struct {
 	activeTab     int
 }
 
-// goofy ah functions cause go can't do ternary
 func max(a, b int) int {
 	if a > b {
 		return a
@@ -131,8 +130,7 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, cmd
 }
 
-// changes the view of tui, changes colors of the target string based on
-// what the user typed
+// changes the view of tui, changes colors of the target string based on what the user typed
 func (m model) View() string {
 	// Render each tab with active/inactive style
 	var renderedTabs []string

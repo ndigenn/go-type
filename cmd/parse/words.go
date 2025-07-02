@@ -15,7 +15,7 @@ var FilteredWords = map[string][]string {
 }
 
 func ParseWords() map[string][]string {
-	// open file!!!!!!!!!
+	// open file
 	f, err := os.Open("cmd/parse/words.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -30,9 +30,7 @@ func ParseWords() map[string][]string {
 	// set bytes to a string and split the fields
 	words := strings.Fields(string(b))
 
-	// could grab 85 words at a time, split them into the map
 	total := len(words)
-
 	for i := 0; i+10 <= total; i += 10 {
 		FilteredWords["small-10"] = append(FilteredWords["small-10"], words[i:i+10]...)
 	}
